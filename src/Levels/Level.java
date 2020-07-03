@@ -8,18 +8,23 @@ import java.util.ArrayList;
 
 public abstract class Level {
     private Player player;
-    private int cellSize;
+    private int height;
+    private int width;
     private ArrayList<GameObject> level;
 
     public Level(Player player){
         this.player = player;
-        cellSize = player.getX();
+        this.width = player.getX();
+        this.height = player.getY();
         level = new ArrayList<GameObject>();
+        System.out.println(width+" "+height);
         init();
     }
 
     public Level(){
-        this.player = new Player(cellSize*2,cellSize*2,"2.png",1,0);
+        this.height = 40;
+        this.width = 40;
+        this.player = new Player(width*2,height*2,"2.png",1,0);
         init();
     }
 
@@ -28,18 +33,18 @@ public abstract class Level {
     }
 
     private void init(){
-        for(int i = 0;i<12;i+=1){
-            level.add(new BorderedGameObject(0, cellSize*i, "1.png", true));
+        for(int i = 0;i<11;i+=1){
+            level.add(new BorderedGameObject(0, height*i, "wall.png", true));
         }
-        for(int i = 0;i<12;i+=1){
-            level.add(new BorderedGameObject(cellSize*i, 0, "1.png", true));
+        for(int i = 0;i<11;i+=1){
+            level.add(new BorderedGameObject(width*i, 0, "wall.png", true));
         }
     }
 
     public ArrayList<GameObject> getVisibleArea(){
         ArrayList<GameObject> visible = new ArrayList<GameObject>();
 
-        return visible;
+        return level;
     }
 
 
