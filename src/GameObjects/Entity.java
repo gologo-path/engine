@@ -9,7 +9,10 @@ public abstract class Entity extends BorderedGameObject {
     public void move(int x,int y){
         super.setX(x);
         super.setY(y);
-        //Event?
+    }
+    public void move(GameObject target){
+        super.setX(target.getX());
+        super.setY(target.getY());
     }
 
 }

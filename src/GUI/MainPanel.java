@@ -1,14 +1,10 @@
 package GUI;
 import GameObjects.*;
-import Levels.Level;
 import Levels.TestLevel;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.PlainDocument;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -19,27 +15,77 @@ public class MainPanel extends JPanel {
     private JFrame frame;
     private Player player ;
     private TestLevel level;
+    private int width;
+    private int height;
 
 
     public MainPanel(JFrame frame){
         this.frame = frame;
+        this.height = frame.getHeight()/11;
+        this.width = frame.getWidth()/11;
         entities = new PriorityQueue<Entity>();
-        player = new Player((frame.getWidth()/11)-1,(frame.getHeight()/11)-2,"2.png",1,0);
-        System.out.println(((frame.getWidth()/11)-1)+" "+((frame.getHeight()/11)-2));
-        level = new TestLevel(player);
-        gameObjects = level.getVisibleArea();
+        player = new Player(0,0,"2.png",1,0);
+        level = new TestLevel(player,width,height);
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()){
+                    case KeyEvent.VK_D:
+                        for(GameObject gameObject : gameObjects){
+                            if(gameObject.getX() == player.getX()+width && gameObject.getY() == player.getY()){
+                                if(!((BorderedGameObject)gameObject).isBorder()){
+                                    level.playerMoveRight();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case KeyEvent.VK_S:
+                        for(GameObject gameObject : gameObjects){
+                            if(gameObject.getX() == player.getX() && gameObject.getY()-height == player.getY()){
+                                if(!((BorderedGameObject)gameObject).isBorder()){
+                                    level.playerMoveDown();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case KeyEvent.VK_A:
+                        for(GameObject gameObject : gameObjects){
+                            if(gameObject.getX() == player.getX()-width && gameObject.getY() == player.getY()){
+                                if(!((BorderedGameObject)gameObject).isBorder()){
+                                    level.playerMoveLeft();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case KeyEvent.VK_W:
+                        for(GameObject gameObject : gameObjects){
+                            if(gameObject.getX() == player.getX() && gameObject.getY()+height == player.getY()){
+                                if(!((BorderedGameObject)gameObject).isBorder()){
+                                    level.playerMoveUp();
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                }
+                frame.repaint();
+            }
+        });
+
     }
 
     @Override
     public void paint(Graphics g) {
+        gameObjects = level.getVisibleArea();
         for (GameObject gameObject : gameObjects) {
-            g.drawImage(gameObject.getTexture(), gameObject.getX(), gameObject.getY(), frame.getWidth() / 11, frame.getHeight() / 11, null);
+            g.drawImage(gameObject.getTexture(), gameObject.getX(), gameObject.getY(), width, height, null);
         }
-
+        g.drawImage(player.getTexture(),player.getX(),player.getY(),width, height,null);
     }
 
-    @Override
-    public void repaint() {
 
-    }
+
 }
