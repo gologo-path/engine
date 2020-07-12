@@ -11,7 +11,7 @@ import java.util.PriorityQueue;
 
 public class MainPanel extends JPanel {
     private ArrayList<GameObject> gameObjects;
-    private PriorityQueue<Entity> entities;
+    private PriorityQueue<Enemy> enemies;
     private JFrame frame;
     private Player player ;
     private TestLevel level;
@@ -23,7 +23,7 @@ public class MainPanel extends JPanel {
         this.frame = frame;
         this.height = frame.getHeight()/11;
         this.width = frame.getWidth()/11;
-        entities = new PriorityQueue<Entity>();
+        enemies = new PriorityQueue<Enemy>();
         player = new Player(0,0,"2.png",1,0);
         level = new TestLevel(player,width,height);
         frame.addKeyListener(new KeyAdapter() {
